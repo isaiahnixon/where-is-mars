@@ -25,4 +25,33 @@
 
 	// Populate the geocentric distance.
 	$('#distance').text(ephemeris.mars.position.geocentricDistance);
+
+	// Draw solar system.
+	drawSolarSystem();
+	$(window).on('resize', drawSolarSystem);
+
+	// Function for drawing the solar system on the canvas.
+	function drawSolarSystem() {
+		// Get the width and height of the canvas.
+		var c_width = $('#solar-system').width();
+		var c_height = $('#solar-system').height();
+
+		// Instantiate the canvas context.
+		var c = document.getElementById("solar-system");
+		c.width = c_width;
+		c.height = c_height;
+		var ctx = c.getContext("2d");
+
+		// Make the background.
+		ctx.fillStyle = "#222";
+		ctx.fillRect(0, 0, c.width, c_height);
+
+		// Make the sun.
+		ctx.fillStyle = "#FFAA1D";
+		ctx.beginPath();
+		ctx.arc((c_width/2), (c_height/2), (c_width * 0.02), 0, 2 * Math.PI);
+		ctx.fill();
+	}
+	
+
 }());
