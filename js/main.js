@@ -96,6 +96,40 @@
 		ctx.beginPath();
 		ctx.arc(mars.x, mars.y, (min * 0.016), 0, 2 * Math.PI);
 		ctx.fill();
+
+		// Draw mars caption.
+		ctx.font = "bold 12px Arial";
+		ctx.fillStyle = '#b7410e';
+		ctx.fillText("Mars", (mars.x + min * 0.016), (mars.y - min * 0.016));
+
+		// Draw Earth caption.
+		ctx.font = "bold 12px Arial";
+		ctx.fillStyle = '#006994';
+		ctx.fillText("Earth", (earth.x + min * 0.016), (earth.y - min * 0.016));
+
+		// Draw sun caption.
+		ctx.font = "bold 12px Arial";
+		ctx.fillStyle = '#FFAA1D';
+		ctx.fillText("Sun", (c_width/2 + min * 0.04), (c_height/2 - min * 0.04));
+
+		// Draw distance caption.
+		
+
+		// Crunch some more numbers.
+		var slope =  (earth.y - mars.y) / (earth.x - mars.x);
+		var quarterpoint = {
+			x: (earth.x + (earth.x + mars.x) / 2) / 2,
+			y: (earth.y + (earth.y + mars.y) / 2) / 2,
+		};
+
+		// Draw the distance label.
+		ctx.save();
+		ctx.translate(quarterpoint.x, quarterpoint.y);
+		ctx.rotate(Math.atan(slope));
+		ctx.font = "bold 12px Arial";
+		ctx.fillStyle = '#9400D3';
+		ctx.fillText(ephemeris.mars.position.geocentricDistance + " AU", (min * -0.016), (min * -0.016));
+		ctx.restore();
 	}
 	
 
