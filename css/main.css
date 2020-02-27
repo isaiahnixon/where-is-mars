@@ -267,9 +267,19 @@ textarea {
 canvas#solar-system {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: -1;
 }
 
+.x, .y, .z {
+    padding-left: 1em;
+}
+
+#content {
+    background: rgba(0, 0, 0, 0.5);
+    width: fit-content;
+    padding: 1.5em;
+    margin-bottom: 100vh;
+}

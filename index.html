@@ -23,28 +23,29 @@
   <![endif]-->
 
   <!-- Add your site or application content here -->
-  <h1>Where is Mars?</h1>
-  <div id="mars">
-    <p>Relative to the Sun, Mars is at:</p>
-    <ul>
-      <li>X: <span class="x"></span> AU</li>
-      <li>Y: <span class="y"></span> AU</li>
-      <li>Z: <span class="z"></span> AU</li>
-    </ul>
-  </div>
+  <div id="content">
+    <h1>Where is Mars?</h1>
 
-  <h2>Where is Earth?</h2>
-  <div id="earth">
-    <p>Relative to the Sun, Earth is at:</p>
-    <ul>
-      <li>X: <span class="x"></span> AU</li>
-      <li>Y: <span class="y"></span> AU</li>
-      <li>Z: <span class="z"></span> AU</li>
-    </ul>
-  </div>
+    <p>Relative to the Sun (heliocentric):</p>
 
-  <h2>How far apart are they?</h2>
-  <p>Mars is a <span id="distance"></span> AU straight shot from Earth.</p>
+    <div id="mars">
+      <strong>Mars</strong> - [<br/>
+      <span class="x"></span> <span class="unit">AU</span>, <br/>
+      <span class="y"></span> <span class="unit">AU</span>, <br/>
+      <span class="z"></span> <span class="unit">AU</span><br/>
+      ]
+    </div>
+
+    <div id="earth">
+      <strong>Earth</strong> - [</br>
+      <span class="x"></span> <span class="unit">AU</span>, <br/>
+      <span class="y"></span> <span class="unit">AU</span>, <br/>
+      <span class="z"></span> <span class="unit">AU</span><br/>
+      ]
+    </div>
+
+    <p>Distance: <span id="distance"></span> AU</p>
+  </div>
 
   <canvas id="solar-system"></canvas>
 

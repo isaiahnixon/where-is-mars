@@ -110,25 +110,22 @@
 		// Draw sun caption.
 		ctx.font = "bold 12px Arial";
 		ctx.fillStyle = '#FFAA1D';
-		ctx.fillText("Sun", (c_width/2 + min * 0.04), (c_height/2 - min * 0.04));
-
-		// Draw distance caption.
-		
+		ctx.fillText("Sun", (c_width/2 + min * 0.04), (c_height/2 - min * 0.04));		
 
 		// Crunch some more numbers.
 		var slope =  (earth.y - mars.y) / (earth.x - mars.x);
-		var quarterpoint = {
-			x: (earth.x + (earth.x + mars.x) / 2) / 2,
-			y: (earth.y + (earth.y + mars.y) / 2) / 2,
+		var midpoint = {
+			x: (earth.x + mars.x) / 2,
+			y: (earth.y + mars.y) / 2,
 		};
 
 		// Draw the distance label.
 		ctx.save();
-		ctx.translate(quarterpoint.x, quarterpoint.y);
+		ctx.translate(midpoint.x, midpoint.y);
 		ctx.rotate(Math.atan(slope));
 		ctx.font = "bold 12px Arial";
 		ctx.fillStyle = '#9400D3';
-		ctx.fillText(ephemeris.mars.position.geocentricDistance + " AU", (min * -0.016), (min * -0.016));
+		ctx.fillText(ephemeris.mars.position.geocentricDistance.toFixed(3) + " AU", (min * -0.016), (min * -0.016));
 		ctx.restore();
 	}
 	
