@@ -35,6 +35,10 @@ Nativate to [http://localhost:8080](http://localhost:8080) in a web browser.
 * **[HTML5 Boilerplate](https://html5boilerplate.com/)**
 * **[Moshier Ephemeris JS](https://github.com/0xStarcat/Moshier-Ephemeris-JS)**
 
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us. 
+
 ## License
 
 Per GPLv3 requirements this project maintains the same license as Moshier Ephemeris JS - see [LICENSE.txt](LICENSE.txt) for details.
