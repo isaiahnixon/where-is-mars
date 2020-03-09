@@ -43,6 +43,21 @@
 		c.height = c_height;
 		var ctx = c.getContext("2d");
 
+		// Function for making stars.
+		// Source: https://medium.com/better-programming/fun-with-html-canvas-lets-create-a-star-field-a46b0fed5002
+		const putPixel = (x, y, brightness) => {
+		  	const intensity = brightness * 255;
+		  	const rgb = "rgb(" + intensity + "," + intensity + "," + intensity + ")";
+		  	ctx.fillStyle = rgb;
+		  	ctx.fillRect(x, y, 1, 1);
+		};
+
+		// Function for random numbers between set values.
+		// Based on: https://stackoverflow.com/questions/4959975
+		const randomWithMax = (max) => {
+	  		return Math.floor(Math.random() * max) + 1 
+		}
+
 		// Crunch some numbers.
 		var mars = {
 			distance: Math.sqrt(Math.pow(ephemeris.mars.position.rect[0], 2) + Math.pow(ephemeris.mars.position.rect[1], 2)),
@@ -59,6 +74,11 @@
 		// Make the background.
 		ctx.fillStyle = "#222";
 		ctx.fillRect(0, 0, c_width, c_height);
+
+		// Draw the stars.
+		for (var i = 200; i >= 1; i--) {
+			putPixel(randomWithMax(c_width), randomWithMax(c_height), Math.random());
+		}
 
 		// Make mars orbit.
 		ctx.strokeStyle = "#00FF00";
