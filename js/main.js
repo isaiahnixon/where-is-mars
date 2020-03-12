@@ -137,7 +137,6 @@
 		// Get the dimensions of the canvas.
 		const c_width = $('#solar-system').width();
 		const c_height = $('#solar-system').height();
-		const min = Math.min(c_height, c_width);
 
 		// Instantiate the canvas context.
 		c.width = c_width;
@@ -166,14 +165,14 @@
 		stars.forEach(star => putPixel(star.x, star.y, star.brightness));
 
 		// Set the stars to flicker.
-		const flickerStarsInterval = setInterval(() => {
+		return setInterval(() => {
 			stars.forEach(star => {
 				if (Math.random() < 0.025) {
 					putPixel(star.x, star.y, Math.random());
 				}
 			});
 		}, 100);
-		$(window).resize(() => clearInterval(flickerStarsInterval));
+		
 	};
 
 	/*** RUNTIME CODE ***/
@@ -181,23 +180,26 @@
 	updateDisplayedData(ephemeris);
 	setUpCanvas();
 	let stars = generateStars();
-	drawStars(stars);
+	let flickerStarsInterval = drawStars(stars);
 	drawEphemerisDependentComponents(ephemeris);
-	
-	$(window).on('resize', () => {
-		ctx.clearRect(0, 0, c.width, c.height);
-		setUpCanvas();
-		stars = generateStars();
-		drawStars(stars);
-		drawEphemerisDependentComponents(ephemeris);
-	});
 
 	setInterval(() => {
 		ephemeris = getEphemeris();
 		updateDisplayedData(ephemeris);
 		ctx.clearRect(0, 0, c.width, c.height);
 		setUpCanvas();
-		drawStars(stars);
+		flickerStarsInterval = drawStars(stars);
 		drawEphemerisDependentComponents(ephemeris);
 	}, 60000);
+
+	/** EVENT LISTENERS ***/
+	$(window).on('resize', () => {
+		ctx.clearRect(0, 0, c.width, c.height);
+		setUpCanvas();
+		stars = generateStars();
+		clearInterval(flickerStarsInterval);
+		flickerStarsInterval = drawStars(stars);
+		drawEphemerisDependentComponents(ephemeris);
+		
+	});
 }());
