@@ -71,14 +71,32 @@
 			y: c_height/2 + (min/3 * ephemeris.Earth.position.rect[1])
 		};
 
+		// Generate stars
+		let stars = [];
+		for (var i = 0; i < 200; i++) {
+			stars[i] = {
+				x: randomWithMax(c_width),
+				y: randomWithMax(c_height),
+				brightness: Math.random()
+			};
+		}
+
 		// Make the background.
 		ctx.fillStyle = "#222";
 		ctx.fillRect(0, 0, c_width, c_height);
 
 		// Draw the stars.
-		for (var i = 200; i >= 1; i--) {
-			putPixel(randomWithMax(c_width), randomWithMax(c_height), Math.random());
-		}
+		stars.forEach(star => putPixel(star.x, star.y, star.brightness));
+
+		// Set the stars to flicker.
+		const flickerStarsInterval = setInterval(() => {
+			stars.forEach(star => {
+				if (Math.random() < 0.025) {
+					putPixel(star.x, star.y, Math.random());
+				}
+			});
+		}, 100);
+		$(window).resize(() => clearInterval(flickerStarsInterval));
 
 		// Make mars orbit.
 		ctx.strokeStyle = "#00FF00";
