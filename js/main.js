@@ -48,7 +48,14 @@
   		return Math.floor(Math.random() * max) + 1 
 	}
 
-	const drawEphemerisDependentComponents = (ephemeris) => {
+	const drawComponents = (ephemeris, stars) => {
+		// Make the background.
+		ctx.fillStyle = "#222";
+		ctx.fillRect(0, 0, c.width, c.height);
+
+		// Draw the stars.
+		stars.forEach(star => putPixel(star.x, star.y, star.brightness));
+
 		// Crunch some numbers.
 		const min = Math.min(c.height, c.width);
 
@@ -131,20 +138,22 @@
 		ctx.fillStyle = '#9400D3';
 		ctx.fillText(ephemeris.mars.position.geocentricDistance.toFixed(3) + " AU", (min * -0.016), (min * -0.016));
 		ctx.restore();
+
+		// Return the animation interval.
+		return setInterval(() => {
+			// Set the stars to flicker.
+			stars.forEach(star => {
+				if (Math.random() < 0.025) {
+					putPixel(star.x, star.y, Math.random());
+				}
+			});
+		}, 100);
 	};
 
 	const setUpCanvas = () => {
-		// Get the dimensions of the canvas.
-		const c_width = $('#solar-system').width();
-		const c_height = $('#solar-system').height();
-
-		// Instantiate the canvas context.
-		c.width = c_width;
-		c.height = c_height;
-
-		// Make the background.
-		ctx.fillStyle = "#222";
-		ctx.fillRect(0, 0, c_width, c_height);
+		// Feed the size back to the canvas.
+		c.width = c.clientWidth;
+		c.height = c.clientHeight;
 	};
 
 	const generateStars = () => {
@@ -160,19 +169,16 @@
 		return stars;
 	}
 
-	const drawStars = (stars) => {
-		// Draw the stars.
-		stars.forEach(star => putPixel(star.x, star.y, star.brightness));
+	const reset = (ephemeris, stars, animationInterval) => {
+		// Clear the  canvas.
+		ctx.clearRect(0, 0, c.width, c.height);
 
-		// Set the stars to flicker.
-		return setInterval(() => {
-			stars.forEach(star => {
-				if (Math.random() < 0.025) {
-					putPixel(star.x, star.y, Math.random());
-				}
-			});
-		}, 100);
-		
+		// End the old animation.
+		clearInterval(animationInterval);
+
+		// Draw it all again.
+		setUpCanvas();
+		return drawComponents(ephemeris, stars);
 	};
 
 	/*** RUNTIME CODE ***/
@@ -180,26 +186,20 @@
 	updateDisplayedData(ephemeris);
 	setUpCanvas();
 	let stars = generateStars();
-	let flickerStarsInterval = drawStars(stars);
-	drawEphemerisDependentComponents(ephemeris);
+	let animationInterval = drawComponents(ephemeris, stars);
+	
 
 	setInterval(() => {
+		// Update ephemeris.
 		ephemeris = getEphemeris();
 		updateDisplayedData(ephemeris);
-		ctx.clearRect(0, 0, c.width, c.height);
-		setUpCanvas();
-		flickerStarsInterval = drawStars(stars);
-		drawEphemerisDependentComponents(ephemeris);
+		animationInterval = reset(ephemeris, stars, animationInterval);
 	}, 60000);
 
 	/** EVENT LISTENERS ***/
-	$(window).on('resize', () => {
-		ctx.clearRect(0, 0, c.width, c.height);
-		setUpCanvas();
+	window.addEventListener('resize', () => {
+		// Update the stars.
 		stars = generateStars();
-		clearInterval(flickerStarsInterval);
-		flickerStarsInterval = drawStars(stars);
-		drawEphemerisDependentComponents(ephemeris);
-		
+		animationInterval = reset(ephemeris, stars, animationInterval);
 	});
 }());
