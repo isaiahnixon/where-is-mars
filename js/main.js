@@ -185,8 +185,7 @@
 	let stars = generateStars();
 	let animationInterval = drawComponents(ephemeris, stars);
 	
-
-	setInterval(() => {
+	let updateInterval = setInterval(() => {
 		// Update ephemeris.
 		ephemeris = getEphemeris();
 		updateDisplayedData(ephemeris);
@@ -204,6 +203,7 @@
 	$('input#date').change(function() {
 		const rawDate = $(this).val();
 		if (rawDate) {
+			clearInterval(updateInterval);
 			const dateArray = rawDate.split("-")
 			ephemeris = getEphemeris(new Date(dateArray[0], dateArray[1] - 1, dateArray[2]));
 			updateDisplayedData(ephemeris);
