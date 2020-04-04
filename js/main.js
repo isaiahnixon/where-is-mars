@@ -4,17 +4,14 @@
 	const ctx = c.getContext("2d");
 
 	/*** FUNCTIONS ***/
-	const getEphemeris = () => {
-		// Get the time and date.
-		const now = new Date();
-
+	const getEphemeris = (date = new Date()) => {
 		// Instantiate ephemeris.
 		return new Ephemeris.default({
-		  year: now.getFullYear(),
-		  month: (now.getMonth()+1),
-		  day: now.getDate(),
-		  hours: now.getHours(),
-		  minutes: now.getMinutes(),
+		  year: date.getFullYear(),
+		  month: (date.getMonth()+1),
+		  day: date.getDate(),
+		  hours: date.getHours(),
+		  minutes: date.getMinutes(),
 		  latitude: 41.37,
 		  longitude: -71.1,
 		  calculateShadows: false
@@ -201,5 +198,20 @@
 		// Update the stars.
 		stars = generateStars();
 		animationInterval = reset(ephemeris, stars, animationInterval);
+	});
+
+	// Update the ephemeris data based on the input date.
+	$('input#date').change(function() {
+		const rawDate = $(this).val();
+		if (rawDate) {
+			const dateArray = rawDate.split("-")
+			ephemeris = getEphemeris(new Date(dateArray[0], dateArray[1] - 1, dateArray[2]));
+			updateDisplayedData(ephemeris);
+			animationInterval = reset(ephemeris, stars, animationInterval);
+		} else {
+			ephemeris = getEphemeris();
+			updateDisplayedData(ephemeris);
+			animationInterval = reset(ephemeris, stars, animationInterval);
+		}
 	});
 }());
