@@ -2,6 +2,7 @@
 	/*** GLOBAL VARS ***/
 	const c = document.getElementById("solar-system");
 	const ctx = c.getContext("2d");
+	let unit = 'AU';
 
 	/*** FUNCTIONS ***/
 	const getEphemeris = (date = new Date()) => {
@@ -19,17 +20,36 @@
 	};
 
 	const updateDisplayedData = (ephemeris) => {
-		// Populate heliocentric coordinates.
-		$('#mars .x').text(ephemeris.mars.position.rect[0]);
-		$('#mars .y').text(ephemeris.mars.position.rect[1]);
-		$('#mars .z').text(ephemeris.mars.position.rect[2]);
 
-		$('#earth .x').text(ephemeris.Earth.position.rect[0]);
-		$('#earth .y').text(ephemeris.Earth.position.rect[1]);
-		$('#earth .z').text(ephemeris.Earth.position.rect[2]);
+		switch (unit) {
+			case 'AU':
+				modifier = 1;
+				break;
+			case 'km':
+				modifier = 149597871;
+				break;
+			case 'mi':
+				modifier = 92955807;
+				break;
+			default:
+				console.error('Error: Unknown unit value.');
+				break;
+		}
+
+		// Update the displayed unit values.
+		$('span.unit').text(unit);
+
+		// Populate heliocentric coordinates.
+		$('#mars .x').text(ephemeris.mars.position.rect[0] * modifier);
+		$('#mars .y').text(ephemeris.mars.position.rect[1] * modifier);
+		$('#mars .z').text(ephemeris.mars.position.rect[2] * modifier);
+
+		$('#earth .x').text(ephemeris.Earth.position.rect[0] * modifier);
+		$('#earth .y').text(ephemeris.Earth.position.rect[1] * modifier);
+		$('#earth .z').text(ephemeris.Earth.position.rect[2] * modifier);
 
 		// Populate the geocentric distance.
-		$('#distance').text(ephemeris.mars.position.geocentricDistance);
+		$('#distance').text(ephemeris.mars.position.geocentricDistance * modifier);
 	}
 
 	// Source: https://medium.com/better-programming/fun-with-html-canvas-lets-create-a-star-field-a46b0fed5002
@@ -213,5 +233,11 @@
 			updateDisplayedData(ephemeris);
 			animationInterval = reset(ephemeris, stars, animationInterval);
 		}
+	});
+
+	// Updated the numbers based on the input unit.
+	$('select#unit').change(function() {
+		unit = $(this).val();
+		updateDisplayedData(ephemeris);
 	});
 }());
