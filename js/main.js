@@ -2,6 +2,7 @@
 	/*** GLOBAL VARS ***/
 	const c = document.getElementById("solar-system");
 	const ctx = c.getContext("2d");
+	const scrollBtn = document.getElementById("scrollBtn");
 
 	/*** FUNCTIONS ***/
 	const getEphemeris = (date = new Date()) => {
@@ -178,12 +179,28 @@
 		return drawComponents(ephemeris, stars);
 	};
 
+	const scrollFunction = () => {
+	;  console.log(document.documentElement.scrollTop);
+	  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+	    scrollBtn.style.display = "none";
+	  } else if (window.matchMedia("(max-width: 700px)").matches) {
+	    scrollBtn.style.display = "block";
+	  }
+	}
+
+	// When the user clicks on the button, scroll to the top of the document
+	const scrollToBottom = () => {
+	  document.body.scrollTop = document.body.scrollHeight; // For Safari
+	  document.documentElement.scrollTop = document.documentElement.scrollHeight; // For Chrome, Firefox, IE and Opera
+	}
+
 	/*** RUNTIME CODE ***/
 	let ephemeris = getEphemeris();
 	updateDisplayedData(ephemeris);
 	setUpCanvas();
 	let stars = generateStars();
 	let animationInterval = drawComponents(ephemeris, stars);
+	scrollFunction();
 	
 	let updateInterval = setInterval(() => {
 		// Update ephemeris.
@@ -198,6 +215,9 @@
 		stars = generateStars();
 		animationInterval = reset(ephemeris, stars, animationInterval);
 	});
+
+	window.onscroll = function() {scrollFunction()};
+	scrollBtn.addEventListener("click", scrollToBottom);
 
 	// Update the ephemeris data based on the input date.
 	$('input#date').change(function() {

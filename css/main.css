@@ -283,3 +283,25 @@ canvas#solar-system {
     padding: 1.5em;
     margin-bottom: 100vh;
 }
+
+#scrollBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    border-radius: 50px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: #555;
+    height: 50px;
+    width: 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+#scrollBtn:hover {
+  background-color: #222;
+}
