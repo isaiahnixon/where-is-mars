@@ -44,10 +44,20 @@
       ]
     </div>
 
-    <p>Distance: <span id="distance"></span> AU</p>
+    <p>Distance: <span id="distance"></span> <span class="unit">AU</span></p>
 
-    <label>Date:</label>
-    <input id="date" type="date" name="Date">
+    <p>
+      <label for="date">Date:</label>
+      <input id="date" type="date" name="Date">
+    </p>
+    <p>
+      <label for="unit">Unit:</label>
+      <select id="unit">
+        <option value="AU">Astronomical Units (AU)</option>
+        <option value="km">Kilometers (km)</option>
+        <option value="mi">Miles (mi)</option>
+      </select>
+    </p>
   </div>
 
   <canvas id="solar-system"></canvas>
